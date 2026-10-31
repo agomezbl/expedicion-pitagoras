@@ -22,9 +22,17 @@ def page(test=False):
 def full(test=False):
     return ('<!doctype html>\n<html lang="es">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n<meta name="theme-color" content="#15121c">\n'
+            '<link rel="manifest" href="manifest.webmanifest">\n<link rel="icon" href="icon-192.png">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n<meta name="mobile-web-app-capable" content="yes">\n<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="apple-mobile-web-app-title" content="Pitágoras">\n'
             '<meta name="description" content="La Expedición Pitágoras / L’Expédition Pythagore: un juego para dominar el teorema de Pitágoras, su recíproco, las raíces, el coseno y las distancias.">\n'
             + page(test).replace('<title>La Expedición Pitágoras</title>\n', '<title>La Expedición Pitágoras</title>\n</head>\n<body>\n', 1) + '</body>\n</html>\n')
 os.makedirs(P('dist'), exist_ok=True)
 for name, html in {'index.html': full(), 'pitagoras.artifact.html': page(), 'test.html': full(True)}.items():
     open(P('dist', name), 'w', encoding='utf-8').write(html)
     print(f'{name:26s} {len(html.encode())/1024:8.1f} KB')
+
+# service worker con la versión del juego (cada publicación cambia la versión y el móvil recibe la mejora)
+import re, time
+ver = re.search(r"const VERSION='([^']+)'", js).group(1)
+sw = open(P('tools', 'sw-template.js'), encoding='utf-8').read().replace('__NAME__', 'La Expedición Pitágoras').replace('__V__', 'pita-' + ver + '-' + time.strftime('%Y%m%d%H%M')).replace('__AUDIO__', 'pita-audio')
+open(P('sw.js'), 'w', encoding='utf-8').write(sw)
+print('sw.js', 'pita-' + ver)

@@ -40,7 +40,7 @@ const DIFF={
    ESTADO GUARDADO
    ========================================================= */
 const KEY='expedicion-pitagoras-v1';
-const VERSION='2.0';
+const VERSION='2.1';
 const ERRKEYS=['lectura','raiz','suma','unidades','calculo','reciproco','coseno','raices','pasos'];
 const fresh=()=>({v:VERSION,xp:0,torches:5,stars:{},relics:{},free:false,traps:0,runStreak:0,bestRun:0,diff:'explorador',lang:null,
   audio:{music:.5,sfx:.8,muted:false},voice:{on:true,auto:true,name:'',rate:1,src:'rec'},
